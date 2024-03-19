@@ -1,1 +1,1 @@
-simple schema validator.# vanilla-validator
+simple schema validator.
