@@ -1,5 +1,16 @@
 const { Validator } = require("./validator");
 
+const exampleEnum = {
+  hello: 1,
+  lorem: 2,
+  foo: 3,
+};
+
+const schema11 = { name: { type: "enum", enum: exampleEnum } };
+const data11 = { name: exampleEnum.hello };
+const result11 = Validator.validateDTO(data11, schema11);
+console.log(result11);
+
 const schema = { name: { type: "string", required: true } };
 const data = { name: "Alperen" };
 const result = Validator.validateDTO(data, schema);

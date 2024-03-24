@@ -22,6 +22,7 @@ class Validator {
         }
       }
 
+      //? string and number handler
       if (expectedType === "string" || expectedType === "number") {
         returnData[key] = data[key];
         const actualType = typeof data[key];
@@ -30,13 +31,30 @@ class Validator {
             `Type mismatch for property '${key}': Expected '${expectedType}', got ${actualType}`,
           );
         }
-      } else if (expectedType === "sub-schema") {
+      }
+      //? enum handler
+      else if (expectedType === "enum") {
+        returnData[key] = data[key];
+        const expectedEnums = schema[key].enum;
+        const actualData = data[key];
+        if (!Object.values(expectedEnums).includes(actualData)) {
+          throw new Error(
+            `Enum mismatch for value '${key}': Expected: Key of one, '${Object.keys(
+              expectedEnums,
+            )}', got '${actualData}'`,
+          );
+        }
+      }
+      //? sub-schema handler
+      else if (expectedType === "sub-schema") {
         const subData = Validator.validateDTO(
           data[key].subSchema,
           schema[key].subSchema,
         );
         returnData[key] = { ...subData };
-      } else {
+      }
+      //? undefined handler
+      else {
         throw new Error(`Invalid schema type for property '${key}'`);
       }
     }
